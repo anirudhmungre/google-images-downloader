@@ -2,8 +2,6 @@ from sys import argv, exit
 from requests import get
 from urllib.request import urlretrieve
 
-print(len(argv))
-print(argv)
 if len(argv) != 5:
     print('Usage: python app.py <search_keyword> <num_results> <directory_to_save_images> <api_key>')
     exit(0)
@@ -29,8 +27,9 @@ print(f'Response Code: {response.status_code}')
 if response.status_code == 200:
     data = response.json()
     for index, image in enumerate(data['images_results'][:num_images]):
+        index += 1
+        save_as = f'{directory}/{index}.jpg'
         try:
-            save_as = f'{directory}/{index}.jpg'
             urlretrieve(image['original'], save_as)
             print(f'#{index} has been saved as {save_as}')
         except Exception:
